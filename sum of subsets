@@ -1,0 +1,45 @@
+#include <iostream>
+#include <vector>
+
+void displaySubset(const std::vector<int>& subset) {
+    std::cout << "{";
+    for (size_t i = 0; i < subset.size(); ++i) {
+        std::cout << subset[i];
+        if (i != subset.size() - 1) {
+            std::cout << ", ";
+        }
+    }
+    std::cout << "}" << std::endl;
+}
+
+void sumOfSubsetsHelper(const std::vector<int>& set, std::vector<int>& currentSubset, int currentIndex, int currentSum, int targetSum) {
+    if (currentSum == targetSum) {
+        displaySubset(currentSubset);
+        return;
+    }
+    
+    if (currentIndex == set.size() || currentSum > targetSum) {
+        return;
+    }
+    
+    currentSubset.push_back(set[currentIndex]);
+    sumOfSubsetsHelper(set, currentSubset, currentIndex + 1, currentSum + set[currentIndex], targetSum);
+    currentSubset.pop_back();
+    
+    sumOfSubsetsHelper(set, currentSubset, currentIndex + 1, currentSum, targetSum);
+}
+
+void sumOfSubsets(const std::vector<int>& set, int targetSum) {
+    std::vector<int> currentSubset;
+    sumOfSubsetsHelper(set, currentSubset, 0, 0, targetSum);
+}
+
+int main() {
+    std::vector<int> set = {1, 2, 5, 6, 8};
+    int targetSum = 9;
+
+    sumOfSubsets(set, targetSum);
+
+    return 0;
+}
+
